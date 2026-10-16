@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kho Tài Liệu & Đề Thi Thử Ngữ Văn THPT QG</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Be Vietnam Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Be Vietnam Pro', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        slateDark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for preview modal & pages */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #16a34a;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #15803d;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slateDark-950 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- 1. HEADER & NAVIGATION -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/90 dark:bg-slateDark-900/90 border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+                        <i class="fa-solid fa-book-bookmark text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-base sm:text-lg leading-tight block text-slate-900 dark:text-white uppercase tracking-tight">KHO TÀI LIỆU NGỮ VĂN</span>
+                        <span class="text-[11px] font-semibold text-brand-600 dark:text-brand-500">Ôn Thi THPT Quốc Gia</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-6 font-medium text-sm">
+                    <a href="#kho-tai-lieu" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-500 transition-colors">Kho Tài Liệu</a>
+                    <a href="#luyen-de" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-500 transition-colors">Luyện Đọc Hiểu</a>
+                    <a href="#cheat-sheet" class="text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-500 transition-colors">Công Thức Viết Văn</a>
+                    <a href="#bookmarks" onclick="filterByBookmarkOnly()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100 transition-all text-xs font-semibold">
+                        <i class="fa-solid fa-bookmark text-amber-500"></i>
+                        <span>Đã Lưu</span>
+                        <span id="saved-count-badge" class="ml-1 bg-amber-500 text-white rounded-full text-[10px] w-4 h-4 inline-flex items-center justify-center">0</span>
+                    </a>
+                </nav>
+
+                <!-- Actions: Dark Mode & Mobile Menu Button -->
+                <div class="flex items-center gap-3">
+                    <button id="theme-toggle" aria-label="Đổi giao diện" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-amber-400 hover:ring-2 hover:ring-brand-500/50 transition-all">
+                        <i id="theme-dark-icon" class="fa-solid fa-moon text-base hidden"></i>
+                        <i id="theme-light-icon" class="fa-solid fa-sun text-base hidden"></i>
+                    </button>
+                    
+                    <button id="mobile-menu-btn" aria-label="Mở menu" class="md:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slateDark-900 px-4 pt-3 pb-4 space-y-2 text-sm font-medium">
+            <a href="#kho-tai-lieu" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-brand-600">Kho Tài Liệu</a>
+            <a href="#luyen-de" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-brand-600">Luyện Đọc Hiểu</a>
+            <a href="#cheat-sheet" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-brand-600">Công Thức Viết Văn</a>
+            <a href="#kho-tai-lieu" onclick="filterByBookmarkOnly()" class="block py-2 text-amber-600 dark:text-amber-400 font-semibold">Tài Liệu Đã Lưu (<span id="mobile-saved-count">0</span>)</a>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION & SEARCH FILTER -->
+    <section class="relative bg-gradient-to-b from-brand-50/60 via-slate-50 to-slate-50 dark:from-slateDark-900 dark:via-slateDark-950 dark:to-slateDark-950 py-12 lg:py-16 border-b border-slate-200/80 dark:border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-100 dark:bg-brand-950/80 text-brand-700 dark:text-brand-300 text-xs font-bold mb-4 border border-brand-200 dark:border-brand-800">
+                <i class="fa-solid fa-graduation-cap"></i> Mở khóa 100% Tài liệu Văn học Miễn phí
+            </span>
+            
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-4">
+                KHO TÀI LIỆU & ĐỀ THI THỬ <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-emerald-500">NGỮ VĂN THPT QG</span>
+            </h1>
+            
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto mb-8 font-normal">
+                Tổng hợp sơ đồ tư duy, dàn ý tác phẩm trọng tâm, đề thi thử kèm đáp án chi tiết và các mẹo viết văn đạt điểm tối đa.
+            </p>
+
+            <!-- Search Bar Box -->
+            <div class="bg-white dark:bg-slateDark-900 p-2 sm:p-3 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-slate-800 max-w-3xl mx-auto">
+                <div class="relative flex items-center">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400"></i>
+                    <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Nhập tên tác phẩm, tên bài hát, đề thi (Vợ Nhặt, Sóng, Tây Tiến...)" class="w-full pl-11 pr-24 py-3 bg-slate-50 dark:bg-slateDark-800 rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400">
+                    <button onclick="resetFilters()" class="absolute right-2 px-3 py-1.5 bg-slate-200 dark:bg-slateDark-700 hover:bg-slate-300 dark:hover:bg-slateDark-600 text-xs font-semibold rounded-lg text-slate-600 dark:text-slate-300 transition-all">
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. FILTER BAR (LỌC KÉP) -->
+    <section id="kho-tai-lieu" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4 w-full">
+        <div class="bg-white dark:bg-slateDark-900 rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+            
+            <!-- Filter Row 1: Khối lớp -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 w-28 shrink-0 flex items-center gap-1.5">
+                    <i class="fa-solid fa-layer-group text-brand-500"></i> Khối Lớp:
+                </span>
+                <div class="flex flex-wrap gap-2" id="grade-filter-group">
+                    <button onclick="setGradeFilter('all')" data-grade="all" class="filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white shadow-sm transition-all">Tất cả</button>
+                    <button onclick="setGradeFilter('10')" data-grade="10" class="filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Lớp 10</button>
+                    <button onclick="setGradeFilter('11')" data-grade="11" class="filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Lớp 11</button>
+                    <button onclick="setGradeFilter('12')" data-grade="12" class="filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Lớp 12</button>
+                    <button onclick="setGradeFilter('thpt')" data-grade="thpt" class="filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Ôn Thi THPT QG</button>
+                </div>
+            </div>
+
+            <hr class="border-slate-100 dark:border-slate-800">
+
+            <!-- Filter Row 2: Dạng tài liệu -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 w-28 shrink-0 flex items-center gap-1.5">
+                    <i class="fa-solid fa-filter text-brand-500"></i> Dạng Tài Liệu:
+                </span>
+                <div class="flex flex-wrap gap-2" id="type-filter-group">
+                    <button onclick="setTypeFilter('all')" data-type="all" class="filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white shadow-sm transition-all">Tất cả dạng</button>
+                    <button onclick="setTypeFilter('de-thi')" data-type="de-thi" class="filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Đề Thi Thử</button>
+                    <button onclick="setTypeFilter('so-do')" data-type="so-do" class="filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Sơ Đồ Tư Duy</button>
+                    <button onclick="setTypeFilter('dan-y')" data-type="dan-y" class="filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Dàn Ý Chi Tiết</button>
+                    <button onclick="setTypeFilter('van-mau')" data-type="van-mau" class="filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Văn Mẫu Chọn Lọc</button>
+                    <button onclick="setTypeFilter('phuong-phap')" data-type="phuong-phap" class="filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all">Phương Pháp Làm Bài</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 4. DANH SÁCH TÀI LIỆU GRID -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fa-solid fa-folder-open text-brand-600"></i> Danh Sách Tài Liệu
+            </h2>
+            <span id="docs-count" class="text-xs font-bold px-3 py-1 bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 rounded-full border border-brand-200 dark:border-brand-800">
+                Hiển thị 0 tài liệu
+            </span>
+        </div>
+
+        <!-- Document Grid Dynamic Render -->
+        <div id="docs-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-16 bg-white dark:bg-slateDark-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800">
+            <div class="w-16 h-16 bg-slate-100 dark:bg-slateDark-800 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400">
+                <i class="fa-solid fa-file-circle-xmark text-2xl"></i>
+            </div>
+            <h3 class="font-bold text-slate-800 dark:text-slate-200 text-base mb-1">Không tìm thấy tài liệu phù hợp</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Hãy thử tìm từ khóa khác hoặc bỏ các bộ lọc hiện tại.</p>
+            <button onclick="resetFilters()" class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs font-semibold hover:bg-brand-700 transition-all">
+                Làm mới tất cả bộ lọc
+            </button>
+        </div>
+    </section>
+
+    <!-- 6. KHU VỰC LUYỆN ĐỀ TRẮC NGHIỆM / ĐỌC HIỂU TƯƠNG TÁC -->
+    <section id="luyen-de" class="py-12 bg-slate-100/70 dark:bg-slateDark-900/50 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-8">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800">
+                    <i class="fa-solid fa-bolt mr-1"></i> Thực Chiến Đọc Hiểu
+                </span>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-2">Luyện Đề Đọc Hiểu Tương Tác</h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Chọn đáp án đúng để thử sức với các câu hỏi đọc hiểu chuẩn cấu trúc thi THPTQG</p>
+            </div>
+
+            <div class="bg-white dark:bg-slateDark-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg">
+                <!-- Quiz Container -->
+                <div id="quiz-wrapper">
+                    <!-- Passage -->
+                    <div class="bg-slate-50 dark:bg-slateDark-800/80 p-4 rounded-xl border border-slate-200 dark:border-slate-700 mb-6">
+                        <span class="text-[11px] font-bold uppercase text-brand-600 dark:text-brand-400 block mb-1">Đoạn văn đọc hiểu:</span>
+                        <p id="quiz-passage-text" class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 italic leading-relaxed">
+                            Loading passage...
+                        </p>
+                    </div>
+
+                    <!-- Question Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 id="quiz-question-title" class="font-bold text-slate-900 dark:text-white text-sm sm:text-base">
+                            Câu hỏi 1...
+                        </h3>
+                        <span id="quiz-step-badge" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300">
+                            Câu 1 / 3
+                        </span>
+                    </div>
+
+                    <!-- Options List -->
+                    <div id="quiz-options-container" class="space-y-3 mb-6">
+                        <!-- Dynamic options -->
+                    </div>
+
+                    <!-- Explanation Box -->
+                    <div id="quiz-explanation" class="hidden p-4 rounded-xl text-xs sm:text-sm leading-relaxed mb-6 font-medium">
+                    </div>
+
+                    <!-- Quiz Buttons -->
+                    <div class="flex justify-between items-center pt-2">
+                        <span id="quiz-score-display" class="text-xs font-semibold text-slate-500">
+                            Điểm số: <strong class="text-brand-600 dark:text-brand-400">0</strong>
+                        </span>
+                        
+                        <div class="flex gap-2">
+                            <button id="quiz-submit-btn" onclick="submitQuizAnswer()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm">
+                                Nộp Bài
+                            </button>
+                            <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm">
+                                Câu Tiếp Theo <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Completion Card -->
+                <div id="quiz-completed-card" class="hidden text-center py-8">
+                    <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-4">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Hoàn Thành Bài Đọc Hiểu!</h3>
+                    <p id="quiz-final-score-text" class="text-sm text-slate-600 dark:text-slate-300 mb-6">Bạn đã trả lời đúng 3/3 câu hỏi.</p>
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition-all">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Làm lại bài luyện tập
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CÔNG THỨC VIẾT VĂN NHANH (CHEAT SHEET) -->
+    <section id="cheat-sheet" class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-8">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Bí kíp đạt điểm 8+</span>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">Công Thức Viết Văn Nhanh & Mẫu Mở/Kết Bài</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Box 1: Mở Bài Dùng Chung NLVH -->
+            <div class="bg-white dark:bg-slateDark-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">Mở Bài Mẫu NLVH Dùng Chung</h3>
+                <p class="text-xs text-slate-600 dark:text-slate-300 italic leading-relaxed bg-slate-50 dark:bg-slateDark-800 p-3 rounded-xl border border-slate-100 dark:border-slate-700">
+                    "Thời gian vẫn gõ nhịp đều đặn qua từng kẽ tay, làm mờ đi biết bao dấu vết của quá khứ. Thế nhưng, có những tác phẩm văn học vẫn vẹn nguyên giá trị và neo đậu lại trong lòng người đọc nhờ vẻ đẹp của [Tên tác phẩm / Tác giả]..."
+                </p>
+                <button onclick="copyCheatText('Thời gian vẫn gõ nhịp đều đặn qua từng kẽ tay, làm mờ đi biết bao dấu vết của quá khứ. Thế nhưng, có những tác phẩm văn học vẫn vẹn nguyên giá trị và neo đậu lại trong lòng người đọc nhờ vẻ đẹp của [Tên tác phẩm / Tác giả]')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline inline-flex items-center gap-1">
+                    <i class="fa-regular fa-copy"></i> Sao chép công thức
+                </button>
+            </div>
+
+            <!-- Box 2: Công Thức NLXH 200 Chữ -->
+            <div class="bg-white dark:bg-slateDark-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">Cấu Trúc Đoạn NLXH 200 Chữ</h3>
+                <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2 list-disc pl-4">
+                    <li><strong>Mở đoạn (1 câu):</strong> Nêu thẳng vấn đề nghị luận.</li>
+                    <li><strong>Giải thích (1-2 câu):</strong> Định nghĩa từ khóa trọng tâm.</li>
+                    <li><strong>Bàn luận (3-4 câu):</strong> Ý nghĩa / Tác hại / Tại sao quan trọng?</li>
+                    <li><strong>Dẫn chứng (2 câu):</strong> Nhân chứng thực tế, thời sự.</li>
+                    <li><strong>Bài học (1-2 câu):</strong> Nhận thức và hành động cá nhân.</li>
+                </ul>
+            </div>
+
+            <!-- Box 3: Dẫn Chứng NLXH Đắt Giá -->
+            <div class="bg-white dark:bg-slateDark-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-quote-left"></i>
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">Dẫn Chứng NLXH Đắt Giá</h3>
+                <div class="space-y-2 text-xs">
+                    <div class="p-2.5 bg-slate-50 dark:bg-slateDark-800 rounded-lg">
+                        <strong class="text-slate-800 dark:text-slate-200 block">Ý chí vượt khó:</strong>
+                        <span class="text-slate-500 dark:text-slate-400">Vận động viên Nguyễn Thị Oanh giành 4 HCV SEA Games trong điều kiện thời gian thi đấu cực kỳ khắc nghiệt.</span>
+                    </div>
+                    <div class="p-2.5 bg-slate-50 dark:bg-slateDark-800 rounded-lg">
+                        <strong class="text-slate-800 dark:text-slate-200 block">Lòng nhân ái:</strong>
+                        <span class="text-slate-500 dark:text-slate-400">Dự án "Nuôi em" lan tỏa dòng tiền từ thiện minh bạch giúp hàng ngàn trẻ em vùng cao đến trường.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER -->
+    <footer class="bg-white dark:bg-slateDark-900 border-t border-slate-200 dark:border-slate-800 py-8 text-xs text-slate-500 dark:text-slate-400 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div>
+                <p class="font-bold text-slate-800 dark:text-slate-200 text-sm">Kho Tài Liệu & Đề Thi Thử Ngữ Văn THPT QG</p>
+                <p class="mt-1">Nền tảng chia sẻ tài liệu ôn thi Ngữ Văn miễn phí, phi lợi nhuận cho học sinh cả nước.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#kho-tai-lieu" class="hover:underline">Trang chủ</a>
+                <a href="#luyen-de" class="hover:underline">Đọc hiểu</a>
+                <a href="#cheat-sheet" class="hover:underline">Công thức</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 5. PREVIEW & DOWNLOAD MODAL -->
+    <div id="preview-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slateDark-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col border border-slate-200 dark:border-slate-800 transform transition-all scale-95 opacity-0 duration-200" id="modal-container">
+            
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span id="modal-badge" class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded bg-brand-100 text-brand-700">Tài liệu</span>
+                    <h3 id="modal-title" class="font-bold text-slate-900 dark:text-white text-base sm:text-lg line-clamp-1">Tên tài liệu</h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div id="modal-body-content" class="p-6 overflow-y-auto text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-4">
+                <!-- Dynamic Modal Content -->
+            </div>
+
+            <!-- Modal Footer Actions -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slateDark-950 rounded-b-2xl flex flex-wrap justify-between items-center gap-3">
+                <span id="modal-size-info" class="text-xs text-slate-500"><i class="fa-regular fa-file-pdf mr-1"></i> Dung lượng: 1.2 MB • 4 Trang</span>
+                <div class="flex gap-2">
+                    <button onclick="closeModal()" class="px-4 py-2 bg-slate-200 dark:bg-slateDark-800 hover:bg-slate-300 dark:hover:bg-slateDark-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition-all">
+                        Đóng
+                    </button>
+                    <button onclick="simulateDownload()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition-all flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-download"></i> Tải Về PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300">
+        <i class="fa-solid fa-circle-check text-brand-400"></i>
+        <span id="toast-message">Thao tác thành công!</span>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        /* --- 1. SAMPLE DATA REPOSITORY --- */
+        const docRepository = [
+            {
+                id: 'doc-1',
+                title: 'Sơ đồ tư duy & Dàn ý phân tích tác phẩm Vợ Nhặt',
+                author: 'Kim Lân',
+                grade: '12',
+                type: 'so-do',
+                typeName: 'Sơ Đồ Tư Duy',
+                pages: '3 trang',
+                size: '1.4 MB',
+                desc: 'Phân tích nhân vật Tràng, cô thị và bà cụ Tứ qua đồ thị tâm lý nhân vật sắc nét.',
+                previewContent: `
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">I. Bối cảnh & Tóm tắt</h4>
+                    <p class="mb-3">Tác phẩm dựng lên bối cảnh nạn đói khủng khiếp năm 1945. Giữa ranh giới mong mong giữa sống và chết, Tràng - một xóm gụ nghèo kéo xe bò thuê - đã "nhặt" được vợ chỉ bằng 4 bát bánh đúc.</p>
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">II. Giá trị Nhân đạo cốt lõi</h4>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li>Tố cáo tội ác tày trời của thực dân Pháp và phát xít Nhật.</li>
+                        <li>Ca ngợi tình người đùm bọc, sẻ chia giữa chốn bần cùng.</li>
+                        <li>Khát vọng sống mãnh liệt và niềm tin hướng về tương lai (hình ảnh lá cờ đỏ sao vàng).</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'doc-2',
+                title: 'Bộ Đề Thi Thử THPT Quốc Gia Ngữ Văn 2026 (Có Đáp Án)',
+                author: 'Ban Chuyên Môn Ngữ Văn',
+                grade: 'thpt',
+                type: 'de-thi',
+                typeName: 'Đề Thi Thử',
+                pages: '12 trang',
+                size: '3.8 MB',
+                desc: '10 bộ đề thi thử bám sát cấu trúc đổi mới, có ma trận đề và hướng dẫn chấm chi tiết.',
+                previewContent: `
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Cấu trúc Đề thi thử số 01:</h4>
+                    <p class="mb-2"><strong>Phần I. Đọc hiểu (3.0 điểm):</strong> Trích đoạn văn bản nghị luận xã hội về lối sống cống hiến âm thầm của giới trẻ.</p>
+                    <p class="mb-2"><strong>Phần II. Làm văn (7.0 điểm):</strong></p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Câu 1 (2.0 điểm): Viết đoạn văn 200 chữ về ý nghĩa của sự kiên trì.</li>
+                        <li>Câu 2 (5.0 điểm): Phân tích hình tượng nhân vật Tràng trong cảnh nhặt vợ.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'doc-3',
+                title: 'Dàn ý chi tiết bài thơ Tây Tiến - Vẻ đẹp bi hùng người lính',
+                author: 'Quang Dũng',
+                grade: '12',
+                type: 'dan-y',
+                typeName: 'Dàn Ý Chi Tiết',
+                pages: '5 trang',
+                size: '2.1 MB',
+                desc: 'Dàn bài phân tích bức tranh thiên nhiên Tây Bắc hùng vĩ cùng khí chất kiên cường của đoàn quân Tây Tiến.',
+                previewContent: `
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">1. Bức tranh thiên nhiên Tây Bắc</h4>
+                    <p class="mb-3">"Sài Môn lấp đoàn quân mệt mỏi / Mường Lát hoa về trong đêm hơi" - Bức tranh thiên nhiên vừa hiểm trở vừa mộng mơ qua cái nhìn hào hoa.</p>
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">2. Hình tượng người lính Tây Tiến</h4>
+                    <p class="mb-3">"Tây Tiến đoàn binh không mọc tóc / Quân xanh màu lá dữ oai hùm" - Vẻ đẹp lãng mạn hòa quyện cùng tinh thần bi hùng.</p>
+                `
+            },
+            {
+                id: 'doc-4',
+                title: 'Tổng hợp Bài Văn Mẫu Nghị Luận Xã Hội Điểm 9+',
+                author: 'Thầy Cô Tuyển Chọn',
+                grade: 'thpt',
+                type: 'van-mau',
+                typeName: 'Văn Mẫu Chọn Lọc',
+                pages: '18 trang',
+                size: '4.5 MB',
+                desc: '20 bài văn mẫu đạt điểm tối đa về các chủ đề thời sự: Lối sống xanh, Trí tuệ nhân tạo, Lòng biết ơn.',
+                previewContent: `
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Trích đoạn bài văn mẫu: Bản lĩnh cá nhân trước làn sóng số</h4>
+                    <p class="mb-3">"Trong kỷ nguyên số bùng nổ, sự hoài nghi và hùa theo đám đông trở thành căn bệnh thầm lặng. Bản lĩnh không nằm ở việc chống lại thế giới, mà ở việc giữ vững tâm trí tỉnh táo giữa muôn vàn thông tin nhiễu loạn..."</p>
+                `
+            },
+            {
+                id: 'doc-5',
+                title: 'Phương pháp làm bài Đọc Hiểu đạt trọn vẹn 3.0 điểm',
+                author: 'Kinh Nghiệm Ôn Thi',
+                grade: '11',
+                type: 'phuong-phap',
+                typeName: 'Phương Pháp Làm Bài',
+                pages: '4 trang',
+                size: '1.1 MB',
+                desc: 'Các bước nhận biết phương thức biểu đạt, thao tác lập luận và mẹo trả lời câu hỏi thông hiểu ngắn gọn.',
+                previewContent: `
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">3 Bước nhận biết nhanh Phương thức biểu đạt chính:</h4>
+                    <ul class="list-disc pl-5 space-y-1 mb-3">
+                        <li><strong>Nghị luận:</strong> Có lập luận, luận điểm, đưa ra ý kiến đánh giá đúng/sai.</li>
+                        <li><strong>Tự sự:</strong> Có cốt truyện, diễn biến sự việc, nhân vật.</li>
+                        <li><strong>Biểu cảm:</strong> Bộc lộ cảm xúc, tình cảm trực tiếp qua thơ hoặc văn xuôi trữ tình.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'doc-6',
+                title: 'Sơ đồ tư duy tác phẩm Chiếc Thuyền Ngoài Xa',
+                author: 'Nguyễn Minh Châu',
+                grade: '12',
+                type: 'so-do',
+                typeName: 'Sơ Đồ Tư Duy',
+                pages: '2 trang',
+                size: '1.8 MB',
+                desc: 'Hai phát hiện của người nghệ sĩ nhiếp ảnh Phùng và bài học sâu sắc về góc nhìn cuộc sống.',
+                previewContent: `
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white mb-2">Hai phát hiện nghệ thuật của Phùng:</h4>
+                    <p class="mb-2"><strong>Phát hiện 1:</strong> Bức ảnh cảnh đắt trời cho - Chiếc thuyền ngoài xa mờ sương đẹp hoàn hảo.</p>
+                    <p class="mb-2"><strong>Phát hiện 2:</strong> Cảnh bạo lực gia đình ở gã chồng hàng chài khi bước xuống thuyền - Hiện thực trần trụi, cay đắng.</p>
+                `
+            }
+        ];
+
+        /* --- 2. STATE MANAGEMENT --- */
+        let activeGrade = 'all';
+        let activeType = 'all';
+        let searchQuery = '';
+        let bookmarkOnly = false;
+        let savedDocIds = JSON.parse(localStorage.getItem('savedDocs_v2')) || [];
+
+        /* --- 3. FILTER & RENDER FUNCTIONS --- */
+        function getFilteredDocs() {
+            return docRepository.filter(doc => {
+                const matchGrade = (activeGrade === 'all') || (doc.grade === activeGrade);
+                const matchType = (activeType === 'all') || (doc.type === activeType);
+                const matchSearch = searchQuery === '' || 
+                    doc.title.toLowerCase().includes(searchQuery) || 
+                    doc.author.toLowerCase().includes(searchQuery) ||
+                    doc.desc.toLowerCase().includes(searchQuery);
+                const matchBookmark = !bookmarkOnly || savedDocIds.includes(doc.id);
+
+                return matchGrade && matchType && matchSearch && matchBookmark;
+            });
+        }
+
+        function renderDocsGrid() {
+            const grid = document.getElementById('docs-grid');
+            const emptyState = document.getElementById('empty-state');
+            const countBadge = document.getElementById('docs-count');
+            
+            const filtered = getFilteredDocs();
+            countBadge.innerText = `Hiển thị ${filtered.length} tài liệu`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(doc => {
+                const isSaved = savedDocIds.includes(doc.id);
+                return `
+                    <div class="bg-white dark:bg-slateDark-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/80 px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">
+                                    ${doc.typeName} • ${doc.grade === 'thpt' ? 'THPT QG' : 'Lớp ' + doc.grade}
+                                </span>
+                                <button onclick="toggleSaveDoc('${doc.id}')" class="p-1 text-slate-300 dark:text-slate-600 hover:text-amber-500 dark:hover:text-amber-400 transition-colors" title="Lưu tài liệu">
+                                    <i class="fa-solid fa-bookmark text-sm ${isSaved ? 'text-amber-500' : ''}"></i>
+                                </button>
+                            </div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors leading-snug">
+                                ${doc.title}
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mb-4 line-clamp-2">
+                                ${doc.desc}
+                            </p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-xs">
+                            <span class="text-slate-400 font-medium"><i class="fa-regular fa-file mr-1"></i> ${doc.pages}</span>
+                            <button onclick="openModal('${doc.id}')" class="px-3 py-1.5 bg-brand-50 dark:bg-brand-950/60 hover:bg-brand-100 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 font-semibold rounded-lg transition-all flex items-center gap-1">
+                                Xem / Tải về <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setGradeFilter(grade) {
+            activeGrade = grade;
+            bookmarkOnly = false;
+            
+            // Update button UI
+            document.querySelectorAll('.filter-grade-btn').forEach(btn => {
+                if (btn.getAttribute('data-grade') === grade) {
+                    btn.className = "filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white shadow-sm transition-all";
+                } else {
+                    btn.className = "filter-grade-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all";
+                }
+            });
+
+            renderDocsGrid();
+        }
+
+        function setTypeFilter(type) {
+            activeType = type;
+            bookmarkOnly = false;
+
+            // Update button UI
+            document.querySelectorAll('.filter-type-btn').forEach(btn => {
+                if (btn.getAttribute('data-type') === type) {
+                    btn.className = "filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white shadow-sm transition-all";
+                } else {
+                    btn.className = "filter-type-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slateDark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slateDark-700 transition-all";
+                }
+            });
+
+            renderDocsGrid();
+        }
+
+        function handleSearch() {
+            searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            renderDocsGrid();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            searchQuery = '';
+            bookmarkOnly = false;
+            setGradeFilter('all');
+            setTypeFilter('all');
+            showToast('Đã làm mới tất cả bộ lọc');
+        }
+
+        function filterByBookmarkOnly() {
+            bookmarkOnly = true;
+            renderDocsGrid();
+            showToast(`Đang hiển thị ${savedDocIds.length} tài liệu đã lưu`);
+        }
+
+        function toggleSaveDoc(docId) {
+            if (savedDocIds.includes(docId)) {
+                savedDocIds = savedDocIds.filter(id => id !== docId);
+                showToast('Đã xóa khỏi tài liệu đã lưu');
+            } else {
+                savedDocIds.push(docId);
+                showToast('Đã lưu tài liệu thành công!');
+            }
+            localStorage.setItem('savedDocs_v2', JSON.stringify(savedDocIds));
+            updateBookmarkBadges();
+            renderDocsGrid();
+        }
+
+        function updateBookmarkBadges() {
+            document.getElementById('saved-count-badge').innerText = savedDocIds.length;
+            document.getElementById('mobile-saved-count').innerText = savedDocIds.length;
+        }
+
+        /* --- 4. PREVIEW MODAL LOGIC --- */
+        function openModal(docId) {
+            const doc = docRepository.find(d => d.id === docId);
+            if (!doc) return;
+
+            document.getElementById('modal-title').innerText = doc.title;
+            document.getElementById('modal-badge').innerText = doc.typeName;
+            document.getElementById('modal-size-info').innerHTML = `<i class="fa-regular fa-file-pdf mr-1"></i> Dung lượng: ${doc.size} • ${doc.pages}`;
+            document.getElementById('modal-body-content').innerHTML = `
+                <div class="p-3 bg-slate-50 dark:bg-slateDark-800 rounded-xl border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 mb-4">
+                    <strong>Tác giả / Nguồn:</strong> ${doc.author} | <strong>Khối Lớp:</strong> ${doc.grade === 'thpt' ? 'THPT QG' : 'Lớp ' + doc.grade}
+                </div>
+                ${doc.previewContent}
+            `;
+
+            const modal = document.getElementById('preview-modal');
+            const container = document.getElementById('modal-container');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                container.classList.remove('scale-95', 'opacity-0');
+                container.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('preview-modal');
+            const container = document.getElementById('modal-container');
+            container.classList.remove('scale-100', 'opacity-100');
+            container.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        function simulateDownload() {
+            showToast('Đang khởi tạo liên kết tải xuống file PDF...');
+            setTimeout(() => {
+                showToast('Tải tài liệu thành công!');
+            }, 1500);
+        }
+
+        function copyCheatText(text) {
+            navigator.clipboard.writeText(text);
+            showToast('Đã sao chép công thức văn học vào bộ nhớ!');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        /* --- 5. INTERACTIVE QUIZ LOGIC --- */
+        const quizData = [
+            {
+                passage: "Đọc đoạn trích sau: 'Sống trong đời sống cần có một tấm lòng / Để làm gì em biết không? / Để gió cuốn đi...'",
+                question: "Thông điệp chính mà tác giả muốn gửi gắm qua đoạn trích trên là gì?",
+                options: [
+                    "Sự sẻ chia, yêu thương tử tế mà không đòi hỏi đền đáp",
+                    "Khuyên con người nên buông bỏ mọi hoài niệm quá khứ",
+                    "Sự mong manh của kiếp người trước thiên nhiên",
+                    "Khuyên con người nên tích cực đi du lịch khắp nơi"
+                ],
+                correct: 0,
+                explanation: "Tấm lòng 'để gió cuốn đi' là biểu tượng cho tình yêu thương chân thành, vị tha, ban phát cho đời mà không màng vụ lợi hay trả ơn."
+            },
+            {
+                passage: "Tác phẩm 'Chiếc thuyền ngoài xa' - Nguyễn Minh Châu",
+                question: "Phát hiện thứ hai của nghệ sĩ nhiếp ảnh Phùng ở bờ biển là gì?",
+                options: [
+                    "Bức tranh bình minh trên biển đẹp hoàn hảo",
+                    "Cảnh gã chồng vũ phu đánh đập người đàn bà hàng chài dã man",
+                    "Cảnh chiếc thuyền bị lật sóng đánh chìm",
+                    "Cảnh chính quyền địa phương thu giữ thuyền đánh cá"
+                ],
+                correct: 1,
+                explanation: "Phát hiện thứ hai hiện thực đầy cay đắng: gã chồng vũ phu đánh đập vợ, đối lập hoàn toàn với vẻ đẹp thơ mộng ở phát hiện thứ nhất."
+            },
+            {
+                passage: "Bài thơ 'Sóng' - Xuân Quỳnh",
+                question: "Tình cảm nào của người phụ nữ trong tình yêu được thể hiện qua hình tượng 'Sóng'?",
+                options: [
+                    "Sự lạnh nhạt và xa cách",
+                    "Nỗi nhớ nhung da diết cả trong mơ lẫn khi thức",
+                    "Sự giận dỗi trẻ con",
+                    "Khát vọng tự do cá nhân"
+                ],
+                correct: 1,
+                explanation: "'Lòng em nhớ đến anh / Cả trong mơ còn thức' thể hiện nỗi nhớ dào dạt, mãnh liệt vượt qua cả không gian và thời gian."
+            }
+        ];
+
+        let quizCurrentIndex = 0;
+        let quizScore = 0;
+        let selectedOptionIdx = null;
+
+        function loadQuizStep() {
+            selectedOptionIdx = null;
+            const q = quizData[quizCurrentIndex];
+            
+            document.getElementById('quiz-passage-text').innerText = q.passage;
+            document.getElementById('quiz-question-title').innerText = `Câu ${quizCurrentIndex + 1}: ${q.question}`;
+            document.getElementById('quiz-step-badge').innerText = `Câu ${quizCurrentIndex + 1} / ${quizData.length}`;
+
+            const container = document.getElementById('quiz-options-container');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const optBtn = document.createElement('button');
+                optBtn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand-500 dark:hover:border-brand-500 bg-slate-50/50 dark:bg-slateDark-800 transition-all text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 flex justify-between items-center";
+                optBtn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-400"></i>`;
+                optBtn.onclick = () => selectQuizOption(idx, optBtn);
+                container.appendChild(optBtn);
+            });
+
+            document.getElementById('quiz-explanation').classList.add('hidden');
+            document.getElementById('quiz-submit-btn').classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+        }
+
+        function selectQuizOption(idx, element) {
+            selectedOptionIdx = idx;
+            const options = document.getElementById('quiz-options-container').children;
+            for (let opt of options) {
+                opt.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slateDark-800 transition-all text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 flex justify-between items-center";
+                opt.querySelector('i').className = "fa-regular fa-circle text-slate-400";
+            }
+            element.className = "w-full text-left p-3.5 rounded-xl border-2 border-brand-500 bg-brand-50/50 dark:bg-brand-950/60 transition-all text-xs sm:text-sm font-semibold text-brand-800 dark:text-brand-200 flex justify-between items-center";
+            element.querySelector('i').className = "fa-solid fa-circle-dot text-brand-600 dark:text-brand-400";
+        }
+
+        function submitQuizAnswer() {
+            if (selectedOptionIdx === null) {
+                showToast('Vui lòng chọn một đáp án trước khi nộp!');
+                return;
+            }
+
+            const q = quizData[quizCurrentIndex];
+            const explanationBox = document.getElementById('quiz-explanation');
+            const options = document.getElementById('quiz-options-container').children;
+
+            if (selectedOptionIdx === q.correct) {
+                quizScore++;
+                document.getElementById('quiz-score-display').innerHTML = `Điểm số: <strong class="text-brand-600 dark:text-brand-400">${quizScore}</strong>`;
+                explanationBox.className = "p-4 rounded-xl text-xs sm:text-sm leading-relaxed mb-6 font-medium bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200";
+                explanationBox.innerHTML = `<strong>Chính xác! 🎉</strong> ${q.explanation}`;
+            } else {
+                explanationBox.className = "p-4 rounded-xl text-xs sm:text-sm leading-relaxed mb-6 font-medium bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-900 text-red-800 dark:text-red-200";
+                explanationBox.innerHTML = `<strong>Chưa đúng! ❌</strong> ${q.explanation}`;
+            }
+
+            // Highlight correct option
+            options[q.correct].className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 text-xs sm:text-sm font-bold text-emerald-800 dark:text-emerald-200 flex justify-between items-center";
+            options[q.correct].querySelector('i').className = "fa-solid fa-circle-check text-emerald-600";
+
+            explanationBox.classList.remove('hidden');
+            document.getElementById('quiz-submit-btn').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            quizCurrentIndex++;
+            if (quizCurrentIndex < quizData.length) {
+                loadQuizStep();
+            } else {
+                document.getElementById('quiz-wrapper').classList.add('hidden');
+                document.getElementById('quiz-completed-card').classList.remove('hidden');
+                document.getElementById('quiz-final-score-text').innerText = `Bạn đã đạt điểm số ${quizScore} / ${quizData.length}`;
+            }
+        }
+
+        function restartQuiz() {
+            quizCurrentIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score-display').innerHTML = `Điểm số: <strong class="text-brand-600 dark:text-brand-400">0</strong>`;
+            document.getElementById('quiz-completed-card').classList.add('hidden');
+            document.getElementById('quiz-wrapper').classList.remove('hidden');
+            loadQuizStep();
+        }
+
+        /* --- 6. DARK / LIGHT MODE CONTROLLER --- */
+        const themeBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-dark-icon');
+        const lightIcon = document.getElementById('theme-light-icon');
+
+        function initTheme() {
+            if (localStorage.getItem('theme_pref') === 'dark' || (!('theme_pref' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                lightIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                darkIcon.classList.remove('hidden');
+            }
+        }
+
+        themeBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme_pref', 'light');
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme_pref', 'dark');
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+            }
+        });
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        /* --- INITIALIZATION --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderDocsGrid();
+            updateBookmarkBadges();
+            loadQuizStep();
+        });
+    </script>
+</body>
+</html>
